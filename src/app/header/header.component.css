@@ -1,0 +1,8 @@
+.header-spacer {
+  flex: 1 1 auto;
+}
+
+.active-item {
+  background-color: rgb(151, 179, 203);
+  border-radius: 4px;
+}

@@ -1,0 +1,73 @@
+<div>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-4 mx-auto myForm">
+        <ul class="nav nav-pills d-flex justify-content-center">
+          <li class="nav-item">
+            <a
+              href="#"
+              [ngClass]="loginMode ? 'SelectedItem' : ''"
+              class="nav-link"
+              (click)="onAuthNavClick(true, $event)"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="#"
+              [ngClass]="!loginMode ? 'SelectedItem' : ''"
+              class="nav-link"
+              (click)="onAuthNavClick(false, $event)"
+              >Register</a
+            >
+          </li>
+        </ul>
+        <form *ngIf="loginMode">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" />
+            <div id="emailHelp" class="form-text">
+              We'll never share your email with anyone else.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <form *ngIf="!loginMode" class="mt-4">
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Email"
+            />
+            <label for="email">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              id="password"
+              type="password"
+              class="form-control"
+              placeholder="Password"
+            />
+            <label for="password">Password</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              id="re-pwd"
+              class="form-control mb-3"
+              placeholder="Re-Enter Password"
+            />
+            <label for="re-pwd">Re-Enter Password</label>
+          </div>
+          <button class="btn btn-primary">Submit</button>
+          <button class="btn btn-info ms-3">Reset</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
