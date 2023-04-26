@@ -1,4 +1,3 @@
-Shyam
 <div>
   <div class="container mt-5">
     <div class="row">
@@ -23,27 +22,53 @@ Shyam
             >
           </li>
         </ul>
-        <form *ngIf="loginMode">
+        <form
+          class="mt-4"
+          *ngIf="loginMode"
+          #login="ngForm"
+          (ngSubmit)="onLoginFormSubmit(login)"
+        >
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" />
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              ngModel
+            />
             <div id="emailHelp" class="form-text">
               We'll never share your email with anyone else.
             </div>
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" />
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              ngModel
+            />
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        <form *ngIf="!loginMode" class="mt-4">
+        <form
+          *ngIf="!loginMode"
+          class="mt-4"
+          #reg="ngForm"
+          (ngSubmit)="onRegisterFormSubmit(reg, pwdControl)"
+        >
           <div class="form-floating mb-3">
             <input
               type="email"
               id="email"
               class="form-control"
               placeholder="Email"
+              name="email"
+              email
+              required
+              ngModel
             />
             <label for="email">Email</label>
           </div>
@@ -53,6 +78,11 @@ Shyam
               type="password"
               class="form-control"
               placeholder="Password"
+              name="password"
+              required
+              minlength="5"
+              ngModel
+              #pwdControl
             />
             <label for="password">Password</label>
           </div>
@@ -62,11 +92,28 @@ Shyam
               id="re-pwd"
               class="form-control mb-3"
               placeholder="Re-Enter Password"
+              name="re-pwd"
+              required
+              minlength="5"
+              [(ngModel)]="rePwdVar"
+              #rePwd="ngModel"
+              [appPwdMatchValidator]="pwdControl"
             />
             <label for="re-pwd">Re-Enter Password</label>
+            <div
+              *ngIf="rePwd.invalid && (rePwd.dirty || rePwd.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="!rePwd.errors?.['matching'].value">
+                Passwords doesn't match
+              </div>
+              <div *ngIf="rePwd.errors?.['minlength']">Password too short</div>
+            </div>
           </div>
-          <button class="btn btn-primary">Submit</button>
-          <button class="btn btn-info ms-3">Reset</button>
+          <button class="btn btn-primary" [disabled]="!reg.valid">
+            Submit
+          </button>
+          <button class="btn btn-info ms-3" (click)="reg.reset()">Reset</button>
         </form>
       </div>
     </div>
