@@ -12,11 +12,21 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { AuthComponent } from './auth/auth.component';
 import { AttacherDirective } from './attacher.directive';
+import { FormsModule } from '@angular/forms';
+import { PwdMatchValidatorDirective } from './pwd-match-validator.directive';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, HomeComponent, AuthComponent, AttacherDirective],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    HomeComponent,
+    AuthComponent,
+    AttacherDirective,
+    PwdMatchValidatorDirective,
+  ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
