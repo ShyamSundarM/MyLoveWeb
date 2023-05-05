@@ -1,7 +1,15 @@
+<div class="">
+  <div class="d-none d-xxl-block">XXL</div>
+  <div class="d-none d-xl-block d-xxl-none">XL</div>
+  <div class="d-none d-lg-block d-xl-none">LG</div>
+  <div class="d-none d-md-block d-lg-none">MD</div>
+  <div class="d-none d-sm-block d-md-none">SM</div>
+  <div class="d-block d-sm-none">X-SMALL</div>
+</div>
 <div>
-  <div class="container mt-5">
+  <div class="container my-auto">
     <div class="row">
-      <div class="col-4 mx-auto myForm">
+      <div class="col col-lg-6 mx-auto myForm">
         <ul class="nav nav-pills d-flex justify-content-center">
           <li class="nav-item">
             <a
@@ -23,6 +31,7 @@
           </li>
         </ul>
         <form
+          id="loginForm"
           class="mt-4"
           *ngIf="loginMode"
           #login="ngForm"
@@ -36,12 +45,21 @@
               id="email"
               name="email"
               ngModel
+              email
+              #email="ngModel"
+              required
             />
+            <p
+              *ngIf="email.invalid && (email.dirty || email.touched)"
+              class="text-danger"
+            >
+              Invalid format
+            </p>
             <div id="emailHelp" class="form-text">
               We'll never share your email with anyone else.
             </div>
           </div>
-          <div class="mb-3">
+          <div>
             <label for="password" class="form-label">Password</label>
             <input
               type="password"
@@ -49,15 +67,36 @@
               id="password"
               name="password"
               ngModel
+              required
             />
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div
+            class="d-flex align-items-center"
+            [ngClass]="isLoading ? '' : 'mt-4'"
+          >
+            <div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!login.valid"
+              >
+                Submit
+              </button>
+            </div>
+            <div *ngIf="isLoading" class="lds-facebook">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <h4 class="ms-3" style="margin: 0px">{{ loginStatusMessage }}</h4>
+          </div>
         </form>
         <form
+          id="registerForm"
           *ngIf="!loginMode"
           class="mt-4"
           #reg="ngForm"
-          (ngSubmit)="onRegisterFormSubmit(reg, pwdControl)"
+          (ngSubmit)="onRegisterFormSubmit(reg)"
         >
           <div class="form-floating mb-3">
             <input
@@ -69,8 +108,61 @@
               email
               required
               ngModel
+              #email="ngModel"
             />
             <label for="email">Email</label>
+            <p
+              *ngIf="email.invalid && (email.dirty || email.touched)"
+              class="text-danger"
+            >
+              Email not in a valid format
+            </p>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              id="userName"
+              class="form-control"
+              placeholder="UserName of your choice"
+              name="userName"
+              minlength="6"
+              required
+              ngModel
+              #userName="ngModel"
+            />
+            <label for="userName">UserName of your choice</label>
+            <p
+              *ngIf="userName.invalid && (userName.dirty || userName.touched)"
+              class="text-danger"
+            >
+              UserName too short
+            </p>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              id="firstName"
+              class="form-control"
+              placeholder="First Name"
+              name="firstName"
+              minlength="3"
+              required
+              ngModel
+            />
+            <label for="firstName">First Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              id="LastName"
+              class="form-control"
+              placeholder="Last Name"
+              name="LastName"
+              minlength="3"
+              required
+              ngModel
+            />
+            <label for="LastName">Last Name</label>
           </div>
           <div class="form-floating mb-3">
             <input
@@ -80,11 +172,18 @@
               placeholder="Password"
               name="password"
               required
-              minlength="5"
+              minlength="8"
               ngModel
               #pwdControl
+              #pwd="ngModel"
             />
             <label for="password">Password</label>
+            <p
+              *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)"
+              class="text-danger"
+            >
+              Password too short
+            </p>
           </div>
           <div class="form-floating mb-3">
             <input
@@ -94,9 +193,9 @@
               placeholder="Re-Enter Password"
               name="re-pwd"
               required
-              minlength="5"
               [(ngModel)]="rePwdVar"
               #rePwd="ngModel"
+              #rePwdControl
               [appPwdMatchValidator]="pwdControl"
             />
             <label for="re-pwd">Re-Enter Password</label>
@@ -104,17 +203,68 @@
               *ngIf="rePwd.invalid && (rePwd.dirty || rePwd.touched)"
               class="alert alert-danger"
             >
-              <div *ngIf="!rePwd.errors?.['matching'].value">
+              <div *ngIf="!rePwd.errors?.['matching']">
                 Passwords doesn't match
               </div>
-              <div *ngIf="rePwd.errors?.['minlength']">Password too short</div>
             </div>
           </div>
-          <button class="btn btn-primary" [disabled]="!reg.valid">
-            Submit
-          </button>
-          <button class="btn btn-info ms-3" (click)="reg.reset()">Reset</button>
+          <div class="d-flex align-items-center">
+            <button class="btn btn-primary" [disabled]="!reg.valid">
+              Submit
+            </button>
+            <button class="btn btn-info ms-3" (click)="reg.reset()">
+              Reset
+            </button>
+            <div *ngIf="isLoading" class="lds-facebook">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay" *ngIf="showRegOverlay">
+  <div class="popup">
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <div class="popContent">
+            <h1 *ngIf="regResult.isSuccess">Registered Successfully</h1>
+            <h1 *ngIf="!regResult.isSuccess">Registration Failed</h1>
+            <p *ngIf="!regResult.isSuccess" class="text-danger">
+              Status : {{ regResult.status }}
+            </p>
+
+            <h3 *ngIf="regResult.isSuccess">
+              Goto
+              <a
+                (click)="loginMode = true; showRegOverlay = false"
+                style="cursor: pointer; color: blue"
+                >Login</a
+              >
+            </h3>
+          </div>
+        </div>
+        <div class="col-4 align-self-end">
+          <lottie-player
+            *ngIf="regResult.isSuccess"
+            src="../../assets/lottie/reg-success.json"
+            background="transparent"
+            speed="1"
+            autoplay
+            style="width: 130px; height: 130px"
+          ></lottie-player>
+          <button
+            class="btn btn-danger"
+            *ngIf="!regResult.isSuccess"
+            (click)="showRegOverlay = false"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>

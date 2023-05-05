@@ -14,6 +14,7 @@ import { AuthComponent } from './auth/auth.component';
 import { AttacherDirective } from './attacher.directive';
 import { FormsModule } from '@angular/forms';
 import { PwdMatchValidatorDirective } from './pwd-match-validator.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { PwdMatchValidatorDirective } from './pwd-match-validator.directive';
     PwdMatchValidatorDirective,
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
