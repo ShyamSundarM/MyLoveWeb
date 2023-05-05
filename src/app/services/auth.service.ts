@@ -8,7 +8,7 @@ import { Token } from '../models/Token';
 })
 export class AuthService {
   //url = 'https://localhost:7012/api/';
-  url = 'http://myloveapi.somee.com/api/';
+  url = 'https://myloveapi.somee.com/api/';
 
   constructor(private http: HttpClient) {}
 
